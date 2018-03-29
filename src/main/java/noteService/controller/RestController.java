@@ -50,28 +50,6 @@ public class RestController {
 	@Autowired
 	LoginService loginService;
 	
-	@RequestMapping("/CLIENTS")
-	public List<Client> giveMeAUser() {
-		return clientRepository.findAll();
-	}
-
-	@RequestMapping("/client/{email}")
-	public Client findOne(@PathVariable String email) {
-		return clientRepository.findOne(email);
-	}
-
-	@RequestMapping("/{email}/{name}/{password}")
-	public Client saveOne(@PathVariable String email, @PathVariable String name, @PathVariable String password) {
-		return clientRepository.save(new Client(email, name, utils.encrypt(password)));
-	}
-
-	@RequestMapping("/NOTES")
-	public List<Note> findAllTododos(){
-		return noteDao.findAll();
-	}
-	
-	//REAL 	APPLICATION 	STARTS 		HERE
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<JsonResponseBody> login(@RequestParam(value = "email") String email, @RequestParam(value = "password") String pwd) {
 
@@ -95,7 +73,7 @@ public class RestController {
 	}
 
 	@RequestMapping("/showNotes")
-	public ResponseEntity<JsonResponseBody> showToDos(HttpServletRequest request) {
+	public ResponseEntity<JsonResponseBody> showNotes(HttpServletRequest request) {
 		
 		try {
 			Map<String, Object> userData = loginService.verifyJwtAndGetData(request);
@@ -108,7 +86,7 @@ public class RestController {
 	}
 	
 	@RequestMapping(value="/newNote", method = RequestMethod.POST)
-	public ResponseEntity<JsonResponseBody> newToDo(HttpServletRequest request, @Valid Note toDo, BindingResult result){
+	public ResponseEntity<JsonResponseBody> newNote(HttpServletRequest request, @Valid Note toDo, BindingResult result){
 		
 		NoteValidator validator = new NoteValidator();
 		validator.validate(toDo, result);
@@ -127,7 +105,7 @@ public class RestController {
 	}
 	
 	@RequestMapping(value="/deleteNote/{id}")
-	public ResponseEntity<JsonResponseBody> deleteToDo(HttpServletRequest request, @PathVariable(value="id") Integer id){
+	public ResponseEntity<JsonResponseBody> deleteNote(HttpServletRequest request, @PathVariable(value="id") Integer id){
 		try {
 			loginService.verifyJwtAndGetData(request);
 			noteService.deleteNote(id);
