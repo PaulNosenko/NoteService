@@ -30,7 +30,7 @@ public class NoteServiceApplication implements CommandLineRunner{
 		
 		String encryptedPwd;
 		
-		encryptedPwd = utils.encrypt("Pgs");
+		encryptedPwd = utils.encrypt("Password");
 		clientRepository.save(new Client("paul@gmail.com", "Me", encryptedPwd));
 		
 		encryptedPwd = utils.encrypt("Password");
